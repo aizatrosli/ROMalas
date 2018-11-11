@@ -1,0 +1,4 @@
+skill1,None,None,10
+skill5,None,70,None
+skill3,5,None,50
+item3,None,50,None
