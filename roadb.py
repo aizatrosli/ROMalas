@@ -20,6 +20,7 @@ class adbconnect(objects):
     def __init__(self, ip='127.0.0.1', port=5037):
         self.client = None
         self.device = None
+        self.db = ssdb
         self.ip = ip
         self.port = port
         self.connect()
@@ -52,6 +53,24 @@ class adbconnect(objects):
     def barpool(self):
         barthread = threading.currentThread()
         while getattr(barthread, "pooling", True):
+            bardict = {}
+            for key in self.db['bar'].keys():
+                bardict[key] = self.getbarvalue(__main__.imgarr, key)
+            setattr(__main__, 'bar', bardict)
+
+    def getbarvalue(self, imgarr, bar):
+        db = self.db['bar']
+        getbar = image[db[bar][0]:db[bar][1], db[bar][2]:db[bar][3]][:, :, db[bar][4]][0]
+        getbar[getbar > 110] = 255
+        getbar[getbar < 110] = 0
+        getbar = getbar.astype(bool)
+        barsplit = np.count_nonzero(getbar)
+        if bar == "base_bar" or bar == "job_bar":
+            if bar == "job_bar":
+                getbar = getbar[::-1]
+            barsplit = np.where(getbar[:-1] != getbar[1:])[0] + 1
+        percentagebar = int(100 * (int(barsplit) / getbar.size))
+        return percentagebar
 
 
 

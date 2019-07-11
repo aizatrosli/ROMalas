@@ -6,13 +6,13 @@ import logging
 
 parser = argparse.ArgumentParser(description=r'ROMobile AFK/Helper script. https://github.com/aizatrosli/ROMalas')
 parser.add_argument("-u","--usb", help=r"To run script without NOX Emu (Connect phone through USB connection). ")
-parser.add_argument("-a","--auto", help=r"Trigger auto-attack for all monsters every script start. Default value is 'false'.")
+parser.add_argument("-a","--auto", help=r"Trigger auto-attack for all monsters every script start. Default value is False.", action="store_false")
 parser.add_argument("-m","--macro", help=r"Custom path for custom macro file. Default value is 'macro.txt'")
-parser.add_argument("-v","--verbose", help=r"Toggle verbose output. Enable this will cause performance issues. Default value is 'false'.")
+parser.add_argument("-v","--verbose", help=r"Toggle verbose output. Enable this will cause performance issues. Default value is False.", action="store_false")
 args = parser.parse_args()
 
-AUTO_ATTACK = True if args.auto == "true" else False
-VERBOSE = True if args.verbose == "true" else False
+AUTO_ATTACK = args.auto
+VERBOSE = args.verbose
 MACRO_PATH = args.macro if args.macro else "macro.txt"
 LOG_PATH = "activity.log"
 
